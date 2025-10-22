@@ -1,91 +1,92 @@
 # 🐾 PET TRACKING – Intelligent Emotional Interpretation System
 
 ### Big Data & AI Project | AWS | Streaming | ML | Power BI
-🇪🇸 Español | 🇬🇧 English
+[🇬🇧 English](./README.md) | [🇪🇸 Español](./README-es.md)
+
 ---
 
 ## 🚀 Overview
 
-**Pet Tracking** es un sistema inteligente diseñado para **interpretar en tiempo real las emociones y necesidades básicas de mascotas (perros y gatos)** mediante el análisis de señales fisiológicas, vocalizaciones y comportamiento físico.  
-Su arquitectura combina **Big Data, Machine Learning e IoT** para ofrecer una **comunicación emocional animal-humano** basada en datos objetivos y visualizaciones analíticas.
+**Pet Tracking** is an intelligent system designed to **interpret, in real time, the emotions and basic needs of pets (dogs and cats)** by analyzing physiological signals, vocalizations, and physical behavior.  
+Its architecture combines **Big Data, Machine Learning, and IoT** to deliver **animal–human emotional communication** based on objective data and analytical visualizations.
 
 ---
 
-## 🎯 Objetivos
+## 🎯 Goals
 
-- Analizar grandes volúmenes de datos estructurados y no estructurados (sensores, audio, video, reportes).
-- Identificar patrones de conducta y estados emocionales.
-- Traducir emociones en mensajes comprensibles para cuidadores y veterinarios.
-- Generar visualizaciones interactivas en **Power BI**.
-- Prevenir estrés, ansiedad o enfermedades mediante **alertas inteligentes**.
+- Analyze large volumes of structured and unstructured data (sensors, audio, video, reports).
+- Identify behavior patterns and emotional states.
+- Translate emotions into messages understandable by caregivers and veterinarians.
+- Generate interactive visualizations in **Power BI**.
+- Prevent stress, anxiety, or disease through **smart alerts**.
 
 ---
 
-## 🧠 Arquitectura General
+## 🧠 High‑Level Architecture
 
 ```plaintext
-[Wearables / Cámaras / Micrófonos / Reportes]
+[Wearables / Cameras / Microphones / Reports]
 ↓
-(Ingesta de Datos)
+(Data Ingestion)
 ├── AWS Glue / S3 (Batch)
 ├── AWS Kinesis / Lambda / Firehose (Streaming)
 ↓
-(Almacenamiento)
+(Storage)
 Amazon S3 / Redshift / Athena
 ↓
-(Procesamiento)
+(Processing)
 Amazon EMR (Spark) / Redshift ML
 ↓
-(Visualización)
+(Visualization)
 Power BI Dashboard
 ```
 
 ---
 
-## 🗂️ Recolección de Datos
+## 🗂️ Data Collection
 
-| Fuente | Tipo de Datos |
-|---------|----------------|
-| **Wearables (Collares, Sensores)** | Ritmo cardíaco, temperatura, actividad física, GPS |
-| **Micrófonos Ambientales** | Vocalizaciones, tono emocional, frecuencia de sonidos |
-| **Cámaras** | Postura corporal, gestos, patrones de movimiento |
-| **Reportes de Cuidadores** | Etiquetas emocionales: alegría, ansiedad, hambre, dolor, etc. |
+| Source | Data Type |
+|-------|-----------|
+| **Wearables (Collars, Sensors)** | Heart rate, temperature, physical activity, GPS |
+| **Ambient Microphones** | Vocalizations, emotional tone, sound frequency |
+| **Cameras** | Body posture, gestures, movement patterns |
+| **Caregiver Reports** | Emotional labels: joy, anxiety, hunger, pain, etc. |
 
 ---
 
-## 🔄 Ingesta de Datos
+## 🔄 Data Ingestion
 
-### 🧩 Batch (Diaria)
-- **Origen:** Reportes e historiales de sensores.
-- **Servicios AWS:**  
+### 🧩 Batch (Daily)
+- **Origin:** Reports and sensor histories.
+- **AWS Services:**  
   - `Amazon S3`  
   - `AWS Glue Studio`, `Glue Data Catalog`, `Glue Data Quality`  
-- **Transformaciones:**  
-  - Normalización de tipos y nombres de columnas.  
-  - Clasificación de niveles de riesgo (`alert_level`) y actividad (`activity_level`).  
-  - Validación de calidad con `Glue Data Quality`.
+- **Transformations:**  
+  - Normalization of types and column names.  
+  - Classification of risk level (`alert_level`) and activity (`activity_level`).  
+  - Quality validation with `Glue Data Quality`.
 
-### ⚡ Streaming (Tiempo Real)
-- **Origen:** Dispositivos IoT enviando datos vitales y vocalizaciones.
-- **Servicios AWS:**  
+### ⚡ Streaming (Real Time)
+- **Origin:** IoT devices sending vitals and vocalizations.
+- **AWS Services:**  
   - `Amazon Kinesis Data Streams`  
-  - `AWS Lambda` (transformación JSON → Parquet)  
-  - `Amazon Firehose` (entrega a S3)
-- **Formato:** Parquet comprimido con Snappy, particionado por año/mes/día.
+  - `AWS Lambda` (JSON → Parquet transformation)  
+  - `Amazon Firehose` (delivery to S3)
+- **Format:** Parquet compressed with Snappy, partitioned by year/month/day.
 
 ---
 
-## 🧱 Almacenamiento de Datos
+## 🧱 Data Storage
 
-Estructura del bucket principal:  
+Main bucket structure:  
 `s3://pet-tracking-data-bucket/`
 
 ```plaintext
 ├── raw/
-│   ├── batch/ (Datos crudos por lotes)
-│   ├── stream/ (Datos en tiempo real)
-├── processed/ (Datos transformados)
-├── firehose-output/ (Salida automática de Firehose)
+│   ├── batch/ (Raw batch data)
+│   ├── stream/ (Real‑time data)
+├── processed/ (Transformed data)
+├── firehose-output/ (Automatic Firehose output)
 ├── warehouse/
 │   ├── athena/
 │   └── redshift/
@@ -97,35 +98,35 @@ Estructura del bucket principal:
 └── s3-management/ (Lifecycle rules)
 ```
 
-### Políticas de Ciclo de Vida en S3
+### S3 Lifecycle Policies
 
-| Carpeta | Acción | Tiempo |
-|----------|---------|--------|
-| `raw/batch/` | Mover a Glacier | 30 días |
-| `raw/stream/` | Eliminar | 7 días |
-| `processed/` | Eliminar | 90 días |
-| `firehose-output/` | Eliminar | 60 días |
+| Folder | Action | Time |
+|--------|--------|------|
+| `raw/batch/` | Move to Glacier | 30 days |
+| `raw/stream/` | Delete | 7 days |
+| `processed/` | Delete | 90 days |
+| `firehose-output/` | Delete | 60 days |
 
 ---
 
-## ⚙️ Procesamiento Analítico
+## ⚙️ Analytical Processing
 
 ### 🔸 AWS EMR (Apache Spark)
-- Limpieza, agregación y enriquecimiento de datos.
-- Scripts en `PySpark` almacenados en `emr/scripts/`.
-- Resultados exportados a `emr/results/`.
-- Configuración escalable mediante `bootstrap actions` y `roles` dedicados.
+- Cleaning, aggregation, and data enrichment.
+- Scripts in `PySpark` stored in `emr/scripts/`.
+- Results exported to `emr/results/`.
+- Scalable configuration via `bootstrap actions` and dedicated IAM roles.
 
 ### 🔸 Redshift + Redshift ML
-- Integración con S3 vía **Spectrum**.
-- Entrenamiento de modelo **K-Means** sobre métricas numéricas:
+- Integration with S3 via **Spectrum**.
+- Training a **K‑Means** model on numerical metrics:
   - `age`, `heart_rate_bpm`, `activity_steps`, `gps_lat`, `gps_lon`.
-- Predicción de clústeres de comportamiento emocional.
-- Resultados disponibles para dashboards o alertas.
+- Prediction of behavioral‑emotional clusters.
+- Results available for dashboards or alerts.
 
 ### 🔸 Athena
-- Consultas SQL sobre tablas particionadas en Parquet.
-- Ejemplo de query:
+- SQL queries over partitioned Parquet tables.
+- Query example:
   ```sql
   SELECT emotion, COUNT(*) AS freq
   FROM pet_sounds_data_cleaned
@@ -135,16 +136,16 @@ Estructura del bucket principal:
 
 ---
 
-## 📊 Visualización (Power BI)
+## 📊 Visualization (Power BI)
 
-**Dashboard 1 – Análisis de Datos y Emociones**
-- Volumen de audios registrados.
-- Emoción más común.
-- Evolución de emociones en el tiempo.
-- Frecuencia máxima por emoción.
-- Tabla con espectrogramas asociados.
+**Dashboard 1 – Data & Emotion Analysis**
+- Volume of recorded audios.
+- Most common emotion.
+- Emotion trends over time.
+- Maximum frequency per emotion.
+- Table with associated spectrograms.
 
-**Indicadores Clave (DAX):**
+**Key Indicators (DAX):**
 ```DAX
 Total_Audios = COUNT('pet-sound-data'[IDAudio])
 
@@ -160,45 +161,46 @@ CALCULATE(
 )
 )
 ```
+*(Note: field names can be adapted to your data model in English.)*
 
 ---
 
-## 🧩 Servicios AWS Utilizados
+## 🧩 AWS Services Used
 
-| Etapa | Servicios AWS |
-|--------|----------------|
-| **Ingesta Batch** | AWS Glue Studio, Glue Data Catalog, S3 |
-| **Ingesta Streaming** | Kinesis Data Streams, Lambda, Firehose |
-| **Almacenamiento** | S3, Redshift, Athena |
-| **Procesamiento** | EMR (Spark), Redshift ML |
-| **Visualización** | Power BI |
-
----
-
-## 🧾 Beneficios e Impacto
-
-| Beneficio | Impacto |
-|------------|----------|
-| Comunicación emocional animal-humano | Mejora la relación y empatía con la mascota |
-| Prevención de estrés o enfermedad | Detección temprana basada en datos |
-| Herramienta para veterinarios | Diagnóstico complementario y predictivo |
-| Personalización por raza e individuo | Modelos IA adaptativos |
-| Aplicación educativa y social | Uso en hogares, refugios y clínicas |
+| Stage | AWS Services |
+|-------|--------------|
+| **Batch Ingestion** | AWS Glue Studio, Glue Data Catalog, S3 |
+| **Streaming Ingestion** | Kinesis Data Streams, Lambda, Firehose |
+| **Storage** | S3, Redshift, Athena |
+| **Processing** | EMR (Spark), Redshift ML |
+| **Visualization** | Power BI |
 
 ---
 
-## 🧩 Buenas Prácticas Implementadas
+## 🧾 Benefits & Impact
 
-- **Data Lake estructurado** con separación clara entre raw, processed y results.
-- **Data Quality** con Glue para garantizar consistencia y completitud.
-- **Particionado temporal** (`year/`, `month/`, `day/`) para escalabilidad.
-- **Integración total con servicios nativos de AWS**.
-- **Seguridad y gobernanza** mediante roles IAM y reglas de ciclo de vida.
-- **Documentación completa** en `/docs` con arquitectura y dependencias.
+| Benefit | Impact |
+|---------|--------|
+| Animal–human emotional communication | Improves the relationship and empathy with the pet |
+| Stress or disease prevention | Early detection based on data |
+| Tool for veterinarians | Complementary and predictive diagnostics |
+| Personalization by breed and individual | Adaptive AI models |
+| Educational and social application | Use at homes, shelters, and clinics |
 
 ---
 
-## 📁 Estructura del Proyecto (Resumen)
+## 🧩 Implemented Best Practices
+
+- **Structured data lake** with a clear separation between raw, processed, and results.
+- **Data Quality** with Glue to ensure consistency and completeness.
+- **Temporal partitioning** (`year/`, `month/`, `day/`) for scalability.
+- **Full integration with native AWS services**.
+- **Security & governance** via IAM roles and lifecycle rules.
+- **Complete documentation** in `/docs` with architecture and dependencies.
+
+---
+
+## 📁 Project Structure (Summary)
 
 ```plaintext
 pet-tracking-project/
@@ -213,30 +215,31 @@ pet-tracking-project/
 
 ---
 
-## 🧪 Futuras Mejoras
+## 🧪 Future Improvements
 
-- Incorporación de modelos **Deep Learning** (CNN/LSTM) para análisis multimodal de emociones.
-- Integración con **Amazon SageMaker** para orquestación de pipelines ML.
-- Aplicación móvil con notificaciones push para alertas de bienestar.
-- Uso de **AWS IoT Core** para gestión directa de dispositivos.
-
----
-
-## 👥 Autores y Créditos
-
-**Proyecto desarrollado por:**  
-Equipo de Ingeniería en Big Data & IA  
-**Rol:** Arquitectura, Integración y Análisis Predictivo  
-**Infraestructura:** AWS Cloud  
-**Visualización:** Power BI  
+- Incorporate **Deep Learning** models (CNN/LSTM) for multimodal emotion analysis.
+- Integrate **Amazon SageMaker** for ML pipeline orchestration.
+- Mobile app with push notifications for wellness alerts.
+- Use **AWS IoT Core** for direct device management.
 
 ---
 
-## 📚 Licencia
+## 👥 Authors & Credits
 
-Este proyecto está bajo la licencia **MIT**.  
-Puedes usarlo, modificarlo y distribuirlo citando la fuente original.
+**Developed by:**  
+Big Data & AI Engineering Team  
+**Role:** Architecture, Integration, and Predictive Analytics  
+**Infrastructure:** AWS Cloud  
+**Visualization:** Power BI  
+
+---
+
+## 📚 License
+
+This project is released under the **MIT** license.  
+You are free to use, modify, and distribute it with proper attribution.
 
 ---
 
 **© 2025 – Pet Tracking | Big Data & AI Emotion Analytics**
+
