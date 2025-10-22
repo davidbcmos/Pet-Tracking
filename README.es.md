@@ -1,6 +1,7 @@
 # 🐾 PET TRACKING – Intelligent Emotional Interpretation System
 
 ### Big Data & AI Project | AWS | Streaming | ML | Power BI
+[🇪🇸 Español](./README.es.md) | [🇬🇧 English](./README.md)
 
 ---
 
