@@ -1,0 +1,39 @@
+{
+  "Rules": [
+    {
+      "ID": "ArchiveBatchToGlacier",
+      "Prefix": "raw/batch/",
+      "Status": "Enabled",
+      "Transitions": [
+        {
+          "Days": 30,
+          "StorageClass": "GLACIER"
+        }
+      ]
+    },
+    {
+      "ID": "DeleteStreamAfter7Days",
+      "Prefix": "raw/stream/",
+      "Status": "Enabled",
+      "Expiration": {
+        "Days": 7
+      }
+    },
+    {
+      "ID": "DeleteProcessedAfter90Days",
+      "Prefix": "processed/",
+      "Status": "Enabled",
+      "Expiration": {
+        "Days": 90
+      }
+    },
+    {
+      "ID": "DeleteFirehoseOutputAfter60Days",
+      "Prefix": "firehose-output/",
+      "Status": "Enabled",
+      "Expiration": {
+        "Days": 60
+      }
+    }
+  ]
+}
